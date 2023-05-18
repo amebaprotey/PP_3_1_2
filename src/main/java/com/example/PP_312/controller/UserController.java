@@ -2,11 +2,15 @@ package com.example.PP_312.controller;
 
 import com.example.PP_312.model.User;
 import com.example.PP_312.servise.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 
 
 @Controller
@@ -35,7 +39,9 @@ public class UserController {
         return "new";
     }
     @PostMapping()
-    public String create(@ModelAttribute("user") User user){
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult){
+        if (bindingResult.hasErrors())
+            return "new";
         userService.save(user);
         return "redirect:/users";
     }
@@ -45,7 +51,9 @@ public class UserController {
         return "edit";
     }
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") int id){
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id){
+        if (bindingResult.hasErrors())
+            return "edit";
         userService.update(id,user);
         return "redirect:/users";
     }

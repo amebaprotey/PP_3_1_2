@@ -2,6 +2,8 @@ package com.example.PP_312.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 
 @Entity
@@ -11,8 +13,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     int id;
     @Column(name = "name")
+    @NotEmpty(message = "Поле \"name\" не может быть пустым")
+    @Pattern(regexp = "([a-zA-Zа-яА-я])*",message = "Введены не валидные символы")
     String name;
     @Column(name = "surname")
+    @NotEmpty(message = "Поле \"surname\" фамилия не может быть пустым")
+    @Pattern(regexp = "([a-zA-Zа-яА-я])*", message = "Введены не валидные символы")
     String surname;
 
     public User(String name, String surname) {
